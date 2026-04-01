@@ -25,7 +25,7 @@ export const config:Config = {
     RATE_LIMIT_WINDOW:process.env.RATE_LIMIT_WINDOW || 15,
     RATE_LIMIT_MAX_REQUESTS:process.env.RATE_LIMIT_MAX_REQUESTS || 100,
     LOG_LEVEL:process.env.LOG_LEVEL || "info",
-    REDIS_URL:process.env.REDIS_URL || "redis://localhost:6379",
+    REDIS_URL:process.env.REDIS_URL || "redis://localhost:6380",
     AUTH_SERVICE_URL:process.env.AUTH_SERVICE_URL || "http://localhost:3001",
     ACCOUNTS_SERVICE_URL:process.env.ACCOUNTS_SERVICE_URL || "http://localhost:3002",
     TRANSACTION_SERVICE_URL:process.env.TRANSACTION_SERVICE_URL || "http://localhost:3003",
