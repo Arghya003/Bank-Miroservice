@@ -16,6 +16,11 @@ const loginSchema = z.object({
 })
 
 
+const logoutSchema = z.object({
+    userId: z.number(),
+    token: z.string()
+});
+
 export class AuthController {
     private authService: AuthService;
 
@@ -39,7 +44,8 @@ export class AuthController {
     }
 
     logout = async (req: Request, res: Response): Promise<any> => {
-        await this.authService.logout(req.userId!, req.token);
+        const { userId, token } = logoutSchema.parse(req.body);
+        await this.authService.logout(userId, token);
 
         return res.status(200).json({ message: 'logged out successfully' });
     }

@@ -102,6 +102,7 @@ export class AuthService {
     async logout(userId:number,token:string){
         await redis.del(`auth:${userId}:${token}`)
     }
+    
 
 }
 
