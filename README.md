@@ -1,4 +1,4 @@
-# VBANK - Microservices Masterclass
+# Bank Microservice - Microservices Masterclass
 
 NOTE: This is still in WIP (Work In Progress)
 
