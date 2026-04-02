@@ -21,7 +21,7 @@ PLACEHOLDER FOR ARCHITECTURE DIAGRAM
 
 | Service Name | Port | Description                |
 | ------------ | ---- | -------------------------- |
-| Redis        | 6379 | Cache & session management |
+| Redis        | 6380 | Cache & session management |
 | Redis UI     | 8001 | Redis management interface |
 
 ## 🛠️ Tech Stack
