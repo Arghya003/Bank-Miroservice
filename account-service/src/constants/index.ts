@@ -10,3 +10,4 @@ export const USER_TOPICS = {
 };
 
 export const SAVINGS_ACCOUNT = 'savings account';
+export const CURRENT_ACCOUNT = 'current account';
