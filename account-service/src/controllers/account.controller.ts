@@ -2,10 +2,11 @@ import z from "zod";
 import { AccountType, TransactionType } from "../entity/account.entity";
 import { Request, Response } from "express";
 import { AccountService } from "../services/account.service";
+import { SAVINGS_ACCOUNT } from "../constants";
 
 
 const createSchema = z.object({
-    accountType: z.nativeEnum(AccountType),
+    accountType: z.nativeEnum(AccountType).optional().default(AccountType.SAVINGS),
     accountName: z.string().optional().default('SAVINGS_ACCOUNT'),
 
 })
