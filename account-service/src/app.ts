@@ -3,7 +3,7 @@ dotenv.config();
 
 import express, { NextFunction, Request, Response } from 'express';
 import { verifyToken } from './middlewares/auth.middleware';
-import { accountRouter, indexRouter } from './routes';
+import { accountRouter, indexRouter } from './router';
 import logger from './config/logger';
 import { reqLogger } from './middlewares/req.middleware';
 import { AppDataSource } from './data-soruce';
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(verifyToken);
 
 app.use('/', indexRouter);
-app.use('/api/v1/account', accountRouter);
+app.use('/api/v1/accounts', accountRouter);
 
 app.use(errorHandler);
 

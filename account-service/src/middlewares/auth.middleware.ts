@@ -3,14 +3,13 @@ import jwt from 'jsonwebtoken';
 import { config } from '../config';
 import redis from '../config/redis';
 
-const publicRoutes = ['/', '/health', '/api/v1/account/health/', '/api/v1/account/health',];
+const publicRoutes = ['/', '/health'];
 
 export const verifyToken = (
   req: Request,
   res: Response,
   next: NextFunction,
 ): any => {
-  
   if (publicRoutes.includes(req.path)) {
     return next();
   }
