@@ -76,7 +76,7 @@ export class AuthService {
 
         const token = jwt.sign(
             {
-                id: credential.id,
+                id: credential.user.id,
                 email: credential.email,
                 firstName: credential.user.firstName,
                 lastName: credential.user.lastName,
@@ -99,10 +99,10 @@ export class AuthService {
             email: credential.email,
         }
     }
-    async logout(userId:number,token:string){
+    async logout(userId: number, token: string) {
         await redis.del(`auth:${userId}:${token}`)
     }
-    
+
 
 }
 
