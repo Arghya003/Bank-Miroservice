@@ -1,0 +1,4 @@
+import RedisClient from '@bank_microservices/redis-client';
+import { config } from '.';
+
+export const redisClient = new RedisClient(config.REDIS_URL);
