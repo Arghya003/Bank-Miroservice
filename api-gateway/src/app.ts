@@ -23,7 +23,7 @@ app.use((req:Request,res:Response,next:NextFunction)=>{
 })
 
 app.get("/health", (req, res) => {
-    res.status(200).json({message:"OK"});
+    res.status(200).json({status:"ok"});
 });
 
 proxyServices(app);

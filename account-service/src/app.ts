@@ -3,7 +3,7 @@ dotenv.config();
 
 import express, { NextFunction, Request, Response } from 'express';
 import { verifyToken } from './middlewares/auth.middleware';
-import { accountRouter, indexRouter } from './router';
+import { accountRouter, indexRouter } from './routes';
 import logger from './config/logger';
 import { reqLogger } from './middlewares/req.middleware';
 import { AppDataSource } from './data-soruce';
