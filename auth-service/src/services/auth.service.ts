@@ -33,7 +33,7 @@ export class AuthService {
     async register({ firstName, lastName, email, password }: RegisterDTO) {
         const existing = await this.credentialRepository.findOneBy({ email })
         if (existing) {
-            throw createError("User already exists", 400);
+            throw createError("email already in use", 400);
         }
         const passwordHash = await bcrypt.hash(password, 10);
         const user = new User();
