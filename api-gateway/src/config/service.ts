@@ -19,10 +19,10 @@ class ServiceProxy {
 
         },
         {
-            path:"/api/v1/account",
+            path:"/api/v1/accounts",
             url:config.ACCOUNTS_SERVICE_URL,
             pathRewrite:{
-                '^/':'/api/v1/account/'
+                '^/':'/api/v1/accounts/'
             },
             name:'account-service',
         },
