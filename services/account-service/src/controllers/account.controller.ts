@@ -52,7 +52,6 @@ export class AccountController {
         const { accountNumber, amount, type } = transactionSchema.parse(req.body);
 
         const account = await this.accountService.updateBalance(
-            req.userId,
             accountNumber,
             type,
             amount,

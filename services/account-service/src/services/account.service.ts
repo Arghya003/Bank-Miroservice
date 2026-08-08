@@ -99,14 +99,14 @@ export class AccountService {
     }
   }
 
-  async updateBalance(
-    userId: number,
+    async updateBalance(
     accountNumber: string,
     type: TransactionType,
     amount: number,
   ) {
+    amount = Math.abs(amount);
+
     const account = await this.accountRepository.findOneBy({
-      userId,
       accountNumber,
     });
 
