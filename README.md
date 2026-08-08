@@ -16,19 +16,17 @@ graph TD
     Gateway -->|Account Routes| AccountSvc["Account Service (Port 3002)"]
     Gateway -->|Transaction Routes| TxnSvc["Transaction Service (Port 3003)"]
 
-    AuthSvc -->|Read / Write| AuthDB[("PostgreSQL - Auth DB")]
+    AuthSvc -->|Read / Write Users & Credentials| PostgresDB[("PostgreSQL DB (bank_microservice)")]
     AuthSvc -->|Sessions / Token Blacklist| RedisDB[("Redis Cache (Port 6380)")]
 
-    AccountSvc -->|Read / Write| AccountDB[("PostgreSQL - Account DB")]
+    AccountSvc -->|Read / Write Accounts| PostgresDB
     AccountSvc -->|Publish / Consume| Kafka[("Apache Kafka (Port 9094)")]
 
-    TxnSvc -->|Read / Write| TxnDB[("PostgreSQL - Txn DB")]
+    TxnSvc -->|Read / Write Transactions| PostgresDB
     TxnSvc -->|Publish / Consume| Kafka
 
     subgraph Infrastructure ["Docker Infrastructure"]
-        AuthDB
-        AccountDB
-        TxnDB
+        PostgresDB
         RedisDB
         Kafka
     end
@@ -55,7 +53,9 @@ graph TD
 
 ## 🔄 Distributed Transactions: Saga Pattern
 
-In microservice architectures, each service owns its database. A money transfer across accounts cannot use traditional single-database ACID transactions. Instead, this platform implements the **Choreography-based Saga Pattern** over Apache Kafka to guarantee **Eventual Consistency**.
+All microservices connect to a single PostgreSQL database instance (`bank_microservice` on port `5433`), but each service independently manages and encapsulates its own domain tables (`user`/`credential`, `account`, `transaction`). 
+
+To execute multi-step operations like fund transfers without tight database coupling or blocking ACID transactions across services, this platform implements the **Choreography-based Saga Pattern** over Apache Kafka to guarantee **Eventual Consistency**.
 
 ### 1. Successful Transfer Flow
 
