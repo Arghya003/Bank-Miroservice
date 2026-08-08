@@ -66,11 +66,14 @@ class ServiceProxy {
     }
 
     private static handleProxyRequest(proxyReq: any, req: any, res: any) {
-        logger.debug(`Proxying request to ${req.url}`);
+        if (req.correlationId) {
+            proxyReq.setHeader('x-correlation-id', req.correlationId);
+        }
+        logger.debug(`[${req.correlationId || 'N/A'}] Proxying request to ${req.url}`);
     }
 
     private static handleProxyResponse(proxyRes: any, req: any, res: any) {
-        logger.debug(`Proxying response from ${req.url}`);
+        logger.debug(`[${req.correlationId || 'N/A'}] Proxying response from ${req.url}`);
     }
 
     public static setupProxy(app: Application) {

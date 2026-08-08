@@ -4,7 +4,18 @@ import { TransactionStatus } from '../../entity/transaction.entity';
 import { transactionService } from '../../services/transaction.service';
 import logger from '../../config/logger';
 import { createConsumer } from '../kafka';
+import redis from '../../config/redis';
 import { TransactionEventData } from '../producers/transactionEvents.producer';
+
+async function isDuplicateEvent(
+  transactionId: string,
+  eventType: string,
+): Promise<boolean> {
+  if (!transactionId || !eventType) return false;
+  const key = `idempotency:transaction_service:${transactionId}:${eventType}`;
+  const result = await redis.set(key, 'PROCESSED', 'EX', 86400, 'NX');
+  return result === null;
+}
 
 export const startTransactionEventsConsumer = async (): Promise<Consumer> => {
   const consumer = createConsumer('ts-transaction-events-cg');
@@ -28,6 +39,16 @@ export const startTransactionEventsConsumer = async (): Promise<Consumer> => {
       try {
         const eventData = JSON.parse(value) as TransactionEventData;
         const { eventType, transactionId } = eventData;
+
+        if (transactionId && eventType) {
+          const duplicate = await isDuplicateEvent(transactionId, eventType);
+          if (duplicate) {
+            logger.warn(
+              `[${topic}.${partition}]: Skipping duplicate event ${eventType} for transaction ${transactionId}`,
+            );
+            return;
+          }
+        }
 
         logger.info(
           `[${topic}.${partition}]: processing ${eventType} event for transaction ${transactionId}`,

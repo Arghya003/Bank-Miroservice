@@ -18,6 +18,8 @@ export default KafkaClient;
 export interface KafkaMessage<T> {
     key: string;
     value: T;
+    correlationId?: string;
+    headers?: Record<string, string>;
 }
 export declare abstract class BaseProducer<T> {
     protected abstract readonly topic: string;

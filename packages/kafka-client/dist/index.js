@@ -69,12 +69,19 @@ class BaseProducer {
     async publish(data) {
         try {
             logger.info(`publishing message to topic: ${this.topic} with message: ${JSON.stringify(data)}`);
+            const headers = {
+                ...data.headers,
+            };
+            if (data.correlationId) {
+                headers["x-correlation-id"] = data.correlationId;
+            }
             await this.producer.send({
                 topic: this.topic,
                 messages: [
                     {
                         key: data.key,
                         value: JSON.stringify(data.value),
+                        headers: Object.keys(headers).length > 0 ? headers : undefined,
                     },
                 ],
             });

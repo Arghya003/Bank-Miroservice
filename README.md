@@ -2,7 +2,7 @@
 
 A distributed, event-driven banking microservices application built with **Node.js**, **TypeScript**, **Express**, **Apache Kafka**, **PostgreSQL**, **Redis**, and **Docker**.
 
-The platform demonstrates production-grade microservice principles, including **API Gateway Routing**, **JWT Authentication**, **Distributed Event-Driven Architecture**, and the **Saga Pattern with Compensating Transactions** for eventual consistency across services.
+The platform demonstrates production-grade microservice principles, including **API Gateway Routing**, **JWT Authentication**, **Distributed Event-Driven Architecture**, **Distributed Tracing (Correlation IDs)**, **Redis Event Idempotency**, and the **Saga Pattern with Compensating Transactions** for eventual consistency across services.
 
 ---
 

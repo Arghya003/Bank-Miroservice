@@ -10,9 +10,11 @@ import { AppDataSource } from './data-soruce';
 import { config } from './config';
 import init from './init';
 import { errorHandler } from './middlewares/error.middleware';
+import { correlationMiddleware } from './middlewares/correlation.middleware';
 
 const app = express();
 
+app.use(correlationMiddleware);
 app.use(reqLogger);
 app.use(express.json());
 app.use(verifyToken);

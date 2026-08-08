@@ -8,19 +8,21 @@ import { config } from "./config";
 import logger from "./config/logger";
 
 import { limiter } from "./middlewares/rate-limiter.middleware";
+import { correlationMiddleware } from "./middlewares/correlation.middleware";
 import { proxyServices } from "./config/service";
 
 
 const app = express();
 
-app.use(helmet())
-app.use(cors())
-app.use(limiter)
+app.use(correlationMiddleware);
+app.use(helmet());
+app.use(cors());
+app.use(limiter);
 
-app.use((req:Request,res:Response,next:NextFunction)=>{
-    logger.debug(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+app.use((req: Request, res: Response, next: NextFunction) => {
+    logger.debug(`[${req.correlationId}] ${req.method} ${req.url}`);
     next();
-})
+});
 
 app.get("/health", (req, res) => {
     res.status(200).json({status:"ok"});
