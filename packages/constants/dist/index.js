@@ -1,12 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ERROR_CODES = exports.USER_TOPICS = void 0;
+exports.ERROR_CODES = exports.TRANSACTION_EVENT_TYPES = exports.TRANSACTION_TOPICS = exports.USER_TOPICS = void 0;
 exports.USER_TOPICS = {
     ACCOUNT_CREATED: "account.created",
     ACCOUNT_DELETED: "account.deleted",
     USER_REGISTERED: "user.registered",
 };
+exports.TRANSACTION_TOPICS = {
+    TRANSACTION_EVENTS: "transaction.events",
+};
+exports.TRANSACTION_EVENT_TYPES = {
+    INITIATED: "INITIATED",
+    ACCOUNT_DEBITED: "ACCOUNT_DEBITED",
+    ACCOUNT_DEBIT_FAILED: "ACCOUNT_DEBIT_FAILED",
+    ACCOUNT_CREDITED: "ACCOUNT_CREDITED",
+    ACCOUNT_CREDIT_FAILED: "ACCOUNT_CREDIT_FAILED",
+    ACCOUNT_DEBIT_COMPENSATED: "ACCOUNT_DEBIT_COMPENSATED",
+    COMPLETED: "COMPLETED",
+    FAILED: "FAILED",
+};
 exports.ERROR_CODES = {
     ACCOUNT_NOT_FOUND: "ET01",
     INSUFFICIENT_BALANCE: "ET02",
+    TRANSACTION_FAILED: "ET03",
 };
