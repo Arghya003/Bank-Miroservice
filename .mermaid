@@ -1,0 +1,64 @@
+sequenceDiagram
+    autonumber
+    actor User as User / Postman
+    participant Gateway as API Gateway (Port 3000)
+    participant Auth as Auth Service (Port 3001)
+    participant Account as Account Service (Port 3002)
+    participant Txn as Transaction Service (Port 3003)
+    participant Kafka as Kafka Broker
+
+    %% STEP 1: AUTH
+    rect rgb(235, 245, 255)
+    Note over User, Auth: Step 1: User Registration & Authentication
+    User->>Gateway: 1. POST /api/v1/auth/register (name, email, password)
+    Gateway->>Auth: Forward Registration
+    Auth-->>User: 201 Created (User Registered)
+
+    User->>Gateway: 2. POST /api/v1/auth/login (email, password)
+    Gateway->>Auth: Forward Login
+    Auth-->>User: 200 OK (Returns JWT Token)
+    end
+
+    %% STEP 2: ACCOUNTS
+    rect rgb(240, 255, 240)
+    Note over User, Account: Step 2: Create Accounts & Deposit Initial Balance
+    User->>Gateway: 3. POST /api/v1/accounts (Header: Bearer Token)
+    Gateway->>Account: Forward Account Creation
+    Account-->>User: 201 Created (Account Created: ACC101, Balance: $0)
+
+    User->>Gateway: 4. POST /api/v1/accounts/internal/transaction (Deposit $500 into ACC101)
+    Gateway->>Account: Forward Manual Deposit
+    Account-->>User: 200 OK (ACC101 Balance: $500)
+    end
+
+    %% STEP 3: TRANSACTION & SAGA
+    rect rgb(255, 245, 235)
+    Note over User, Kafka: Step 3: Distributed Money Transfer (Saga Pattern)
+    User->>Gateway: 5. POST /api/v1/transaction/transfer (ACC101 -> ACC202, $200)
+    Gateway->>Txn: Forward Transfer Request
+    Note over Txn: Save Transaction Status: INITIATED
+    Txn->>Kafka: Publish Event: TRANSACTION_INITIATED
+    Txn-->>User: 201 Created (Returns transactionId: TXN_99)
+
+    Kafka->>Account: Consume: TRANSACTION_INITIATED
+    Note over Account: Debits $200 from ACC101 (New Balance: $300)
+    Account->>Kafka: Publish Event: ACCOUNT_DEBITED
+
+    Kafka->>Txn: Consume: ACCOUNT_DEBITED
+    Note over Txn: Update Status: DEBIT_SUCCESS
+
+    Kafka->>Account: Consume: ACCOUNT_DEBITED
+    Note over Account: Credits $200 to ACC202 (New Balance: $200)
+    Account->>Kafka: Publish Event: ACCOUNT_CREDITED
+
+    Kafka->>Txn: Consume: ACCOUNT_CREDITED
+    Note over Txn: Update Status: COMPLETED
+    end
+
+    %% STEP 4: VERIFICATION
+    rect rgb(250, 240, 255)
+    Note over User, Txn: Step 4: Verify Transaction Result
+    User->>Gateway: 6. GET /api/v1/transaction/TXN_99
+    Gateway->>Txn: Forward Query
+    Txn-->>User: 200 OK (Status: COMPLETED, SourceDebited: $200, DestinationCredited: $200)
+    end
