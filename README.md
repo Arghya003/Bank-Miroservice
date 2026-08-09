@@ -223,7 +223,10 @@ npm test
 
 ---
 
-## 📡 API Reference Overview
+## 📡 API Reference Overview & Swagger UI
+
+Interactive API documentation and live testing dashboard is available at:
+👉 **`http://localhost:3000/api-docs`** (Swagger UI)
 
 All requests should be routed through the **API Gateway** at `http://localhost:3000`.
 

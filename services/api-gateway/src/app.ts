@@ -9,6 +9,8 @@ import logger from "./config/logger";
 
 import { limiter } from "./middlewares/rate-limiter.middleware";
 import { correlationMiddleware } from "./middlewares/correlation.middleware";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 import { proxyServices } from "./config/service";
 
 
@@ -27,6 +29,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.get("/health", (req, res) => {
     res.status(200).json({status:"ok"});
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 proxyServices(app);
 
