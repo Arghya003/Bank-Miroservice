@@ -49,17 +49,24 @@ app.use((err:Error,req:Request,res:Response,next:NextFunction)=>{
 
 
 
-const startSever=()=>{
-    try{
-        app.listen(config.PORT,()=>{
+const startSever = () => {
+    try {
+        const server = app.listen(config.PORT, () => {
             logger.info(`${config.SERVICE_NAME} running on port ${config.PORT}`);
-        })
-    }
-    catch(error){
-        logger.error('Failed to start server',error)
+        });
+        server.on("error", (error: any) => {
+            if (error.code === "EADDRINUSE") {
+                logger.error(`Port ${config.PORT} is already in use by another process.`);
+            } else {
+                logger.error("Failed to start server", error);
+            }
+            process.exit(1);
+        });
+    } catch (error) {
+        logger.error("Failed to start server", error);
         process.exit(1);
     }
-}
+};
 
 
 startSever()
