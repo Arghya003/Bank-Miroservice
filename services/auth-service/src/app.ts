@@ -15,7 +15,7 @@ import {errorHandler} from "./middleware/error.middleware"
 import { corsMiddleware } from "./middleware/cors.middleware";
 import { verifyToken } from "./middleware/auth.middleware";
 import { reqLogger } from "./middleware/req.middlware";
-import { correlationMiddleware } from "./middlewares/correlation.middleware";
+import { correlationMiddleware } from "./middleware/correlation.middleware";
 import { setupGracefulShutdown } from "./utils/shutdown";
 
 const app = express()
